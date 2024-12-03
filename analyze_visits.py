@@ -23,24 +23,26 @@ df['walking_speed'] = df['walking_speed'].astype(float)
 df = df.sort_values(by=['patient_id', 'visit_date']) 
 
 # assign random insurance types to each patient_id 
-insurance_types = ['Bronze', 'Gold', 'Silver']  
-id_list = np.unique(df['patient_id'])  
+insurance_types = ['Bronze', 'Gold', 'Silver']
+id_list = np.unique(df['patient_id'])
 insurance_type = {}
 
 for patient_id in id_list:
     insurance_type[patient_id] = np.random.choice(insurance_types)
 
-df['insurance'] = df['patient_id'].map(insurance_type)
+df['insurance_type'] = df['patient_id'].map(insurance_type)
 
-df['visit_cost'] = np.nan  # Initialize the column for visit costs
+df['visit_cost'] = np.nan
 
 for i in range(len(df)):
-    if df.loc[i, 'insurance'] == 'Bronze':
+    if df.loc[i, 'insurance_type'] == 'Bronze':
         df.loc[i, 'visit_cost'] = round(1000 * np.random.uniform(low=0.8, high=1.2), 2)
-    elif df.loc[i, 'insurance'] == 'Gold':
+    elif df.loc[i, 'insurance_type'] == 'Gold':
         df.loc[i, 'visit_cost'] = round(750 * np.random.uniform(low=0.8, high=1.2), 2)
-    elif df.loc[i, 'insurance'] == 'Silver':
+    elif df.loc[i, 'insurance_type'] == 'Silver':
         df.loc[i, 'visit_cost'] = round(500 * np.random.uniform(low=0.8, high=1.2), 2)
+df = df.drop(columns=['insurance'], errors='ignore')
+df.to_csv('ms_data_with_insurance.csv', sep=',', index=False)
 
 #find the mean walking speed by education level
 mean_speed_education = df.groupby('education_level', observed=True)['walking_speed'].mean() 
@@ -52,24 +54,21 @@ model = OLS(y, X)
 results = model.fit()
 
 # find the mean costs by insurance type
-mean_costs_insurance = df.groupby('insurance', observed=True).size() 
+mean_costs_insurance = df.groupby('insurance_type', observed=True)['visit_cost'].mean() 
 
 #results
 # Step 6: Output results
 with open("summary_statistics.txt", "w") as file:
     file.write("Summary Statistics\n")
     file.write("===================\n\n")
-    
 
     file.write("Mean Walking Speed by Education Level:\n")
     file.write(mean_speed_education.to_string())
     file.write("\n\n")
     
-
     file.write("Mean Visit Cost by Insurance Type:\n")
     file.write(mean_costs_insurance.to_string())
     file.write("\n\n")
-    
 
     file.write("=== Linear Regression for Walking Speed by Age ===\n")
     file.write("==============================================================================\n")

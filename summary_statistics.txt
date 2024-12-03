@@ -9,10 +9,10 @@ High School     3.258918
 Some College    3.595779
 
 Mean Visit Cost by Insurance Type:
-insurance
-Bronze    5079
-Gold      4997
-Silver    5335
+insurance_type
+Bronze    1003.155900
+Gold       749.016693
+Silver     499.193933
 
 === Linear Regression for Walking Speed by Age ===
 ==============================================================================
