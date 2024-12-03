@@ -25,11 +25,11 @@ print(results.summary().tables[1], '\n')
 print("=== PT2: Analyze Costs ===")
 print('Overall Visit Cost Statistics:\n', df['visit_cost'].describe(), '\n')
 
-for insurance in df['insurance'].unique():
+for insurance in df['insurance_type'].unique():
     print(f'{insurance} Insurance Visit Cost Statistics:\n', 
-          df.loc[df['insurance'] == insurance, 'visit_cost'].describe(), '\n')
+          df.loc[df['insurance_type'] == insurance, 'visit_cost'].describe(), '\n')
     
-ax = sns.boxplot(data=df, x='insurance', y='visit_cost', palette='pastel')
+ax = sns.boxplot(data=df, x='insurance_type', y='visit_cost', palette='pastel')
 ax.set_title('Visit Cost Distribution by Insurance Type')
 plt.xlabel('Insurance Type')
 plt.ylabel('Visit Cost')
