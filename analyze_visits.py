@@ -57,7 +57,6 @@ results = model.fit()
 mean_costs_insurance = df.groupby('insurance_type', observed=True)['visit_cost'].mean() 
 
 #results
-# Step 6: Output results
 with open("summary_statistics.txt", "w") as file:
     file.write("Summary Statistics\n")
     file.write("===================\n\n")
